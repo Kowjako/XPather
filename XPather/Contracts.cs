@@ -1,5 +1,9 @@
 ﻿namespace XPather
 {
+    /// <summary>
+    /// This contracts are used to change scope of visible methods from builder
+    /// to prevent unexpected behavior
+    /// </summary>
     public static class Contracts
     {
         public interface IAxeNode
