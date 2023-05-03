@@ -252,7 +252,7 @@ namespace XPather.Tests
                            .OpenAttributeBuilder()
                            .WithInnerTextContains("odamax")
                            .CloseAttributeBuilder()
-                           .FirstFromGlobalCollection()
+                           .IndexFromGlobalCollectionEnd(1)
                            .WithFollowingSibling()
                            .OfType("strong")
                            .OpenAttributeBuilder()
@@ -264,7 +264,7 @@ namespace XPather.Tests
             var result = x.BuildPath();
 
             // Assert
-            Assert.Equal("(//span[contains(text(), 'odamax')])[1]/following-sibling::strong[@class='deals-price']", result);
+            Assert.Equal("(//span[contains(text(), 'odamax')])[last() - 1]/following-sibling::strong[@class='deals-price']", result);
         }
     }
 }
