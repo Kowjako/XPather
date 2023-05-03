@@ -1,5 +1,6 @@
 # XPather
-Let's build xpath fluently...
+Let's build xpath fluently...  
+Idea powstania potrzeby takiego buildera wynika z tego, że tak naprawde nikt nie pamieta wszystkiego co sie dzieje w XPath albo pisze dziwne sciezki ktore dzialaja tylko w specyficznych przypadkach.
 ## Przykłady wykorzystania
 Ścieżka: **./app/description/subject[not(@name='wlodek' or @age>21)] | //app/extra-notes**  
 Kod:   
