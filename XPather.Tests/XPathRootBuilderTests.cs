@@ -242,5 +242,29 @@ namespace XPather.Tests
             // Assert
             Assert.Equal("//app/description/*/t/..", result);
         }
+
+        [Fact]
+        public void XPath_Test_10()
+        {
+            // Arrange
+            var x = _target.WithDescendant()
+                           .OfType("span")
+                           .OpenAttributeBuilder()
+                           .WithInnerTextContains("odamax")
+                           .CloseAttributeBuilder()
+                           .FirstFromGlobalCollection()
+                           .WithFollowingSibling()
+                           .OfType("strong")
+                           .OpenAttributeBuilder()
+                           .WhereAttribute("class")
+                           .IsEqualTo("deals-price")
+                           .CloseAttributeBuilder();
+
+            // Act
+            var result = x.BuildPath();
+
+            // Assert
+            Assert.Equal("(//span[contains(text(), 'odamax')])[1]/following-sibling::strong[@class='deals-price']", result);
+        }
     }
 }

@@ -75,6 +75,11 @@ namespace XPather
             return this;
         }
 
+        public XPathAttributeBuilder WithInnerTextContains(string text)
+        {
+            _builder.Append($"contains(text(), '{text}')");
+            return this;
+        }
 
         public XPathAttributeBuilder StartNotCondition()
         {
