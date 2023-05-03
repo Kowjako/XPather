@@ -2,7 +2,7 @@
 
 namespace XPather
 {
-    public class XPathAttributeBuilder
+    public class XPathAttributeBuilder : Contracts.ICondition
     {
         private readonly StringBuilder _builder;
         private readonly XPathRootBuilder _parent;
@@ -15,7 +15,7 @@ namespace XPather
             _builder.Append("[");
         }
 
-        public XPathAttributeBuilder WhereAttribute(string attrName)
+        public Contracts.ICondition WhereAttribute(string attrName)
         {
             _builder.Append($"@{attrName}");
             return this;

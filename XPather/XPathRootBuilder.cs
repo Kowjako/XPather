@@ -2,7 +2,7 @@
 
 namespace XPather
 {
-    public class XPathRootBuilder
+    public class XPathRootBuilder : Contracts.INode, Contracts.IAxeNode
     {
         private readonly StringBuilder _builder;
 
@@ -17,43 +17,43 @@ namespace XPather
             return this;
         }
 
-        public XPathRootBuilder WithDescendant()
+        public Contracts.INode WithDescendant()
         {
             _builder.Append("//");
             return this;
         }
 
-        public XPathRootBuilder WithChild()
+        public Contracts.INode WithChild()
         {
             _builder.Append("/");
             return this;
         }
 
-        public XPathRootBuilder WithFollowingSibling()
+        public Contracts.IAxeNode WithFollowingSibling()
         {
             _builder.Append($"/following-sibling::");
             return this;
         }
 
-        public XPathRootBuilder WithPrecedingSibling()
+        public Contracts.IAxeNode WithPrecedingSibling()
         {
             _builder.Append($"/preceding-sibling::");
             return this;
         }
 
-        public XPathRootBuilder WithDescendantOrSelf()
+        public Contracts.IAxeNode WithDescendantOrSelf()
         {
             _builder.Append($"/descendant-or-self::");
             return this;
         }
 
-        public XPathRootBuilder WithAncestor()
+        public Contracts.IAxeNode WithAncestor()
         {
             _builder.Append($"/ancestor::");
             return this;
         }
 
-        public XPathRootBuilder WithAncestorOrSelf()
+        public Contracts.IAxeNode WithAncestorOrSelf()
         {
             _builder.Append($"/ancestor-or-self::");
             return this;
