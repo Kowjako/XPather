@@ -75,6 +75,7 @@ namespace XPather
             return this;
         }
 
+
         public XPathAttributeBuilder StartNotCondition()
         {
             _builder.Append("not(");

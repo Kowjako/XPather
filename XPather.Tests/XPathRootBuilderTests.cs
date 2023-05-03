@@ -72,7 +72,7 @@ namespace XPather.Tests
         {
             // Arrange
             var x = _target.WithDescendant()
-                           .OfType("*")
+                           .OfTypeAny()
                            .OpenAttributeBuilder()
                            .WhereAttribute("Name")
                            .IsEqualTo("fieldName")
@@ -81,9 +81,9 @@ namespace XPather.Tests
                            .IsEqualTo("TextBlock")
                            .CloseAttributeBuilder()
                            .WithFollowingSibling()
-                           .OfType("*")
+                           .OfTypeAny()
                            .WithChild()
-                           .OfType("*")
+                           .OfTypeAny()
                            .OpenAttributeBuilder()
                            .WhereAttribute("ClassName")
                            .IsEqualTo("MLTextView")
@@ -219,6 +219,28 @@ namespace XPather.Tests
 
             // Assert
             Assert.Equal("(.//Tab[@AutomationId='PART_Tab']/TabItem[not(contains(@Name, 'Motorola'))])[last()]", result);
+        }
+
+        [Fact]
+        public void XPath_Test_9()
+        {
+            // Arrange
+            var x = _target.WithDescendant()
+                           .OfType("app")
+                           .WithChild()
+                           .OfType("description")
+                           .WithChild()
+                           .OfTypeAny()
+                           .WithChild()
+                           .OfType("t")
+                           .WithChild()
+                           .OfTypeParent();
+
+            // Act
+            var result = x.BuildPath();
+
+            // Assert
+            Assert.Equal("//app/description/*/t/..", result);
         }
     }
 }

@@ -65,6 +65,18 @@ namespace XPather
             return this;
         }
 
+        public XPathRootBuilder OfTypeParent()
+        {
+            _builder.Append($"..");
+            return this;
+        }
+
+        public XPathRootBuilder OfTypeAny()
+        {
+            _builder.Append($"*");
+            return this;
+        }
+
         public XPathAttributeBuilder OpenAttributeBuilder()
         {
             var attrBuilder = new XPathAttributeBuilder(_builder, this);
