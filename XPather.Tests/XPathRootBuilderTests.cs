@@ -58,7 +58,7 @@ namespace XPather.Tests
                            .WithInnerText("ss-name")
                            .FinishNotCondition()
                            .CloseAttributeBuilder()
-                           .FirstFromGlobalCollection();
+                           .IndexFromGlobalCollection(1);
 
             // Act
             var result = x.BuildPath();
@@ -111,7 +111,7 @@ namespace XPather.Tests
                            .WhereAttribute("id")
                            .IsGreaterThan(1)
                            .CloseAttributeBuilder()
-                           .FirstFromLocalCollection()
+                           .IndexFromLocalCollection(1)
                            .WithChild()
                            .OfType("value");
 
@@ -159,7 +159,7 @@ namespace XPather.Tests
                            .CloseAttributeBuilder()
                            .WithPrecedingSibling()
                            .OfType("option")
-                           .FirstFromLocalCollection();
+                           .IndexFromLocalCollection(1);
 
             // Act
             var result = x.BuildPath();
@@ -178,7 +178,7 @@ namespace XPather.Tests
                            .OfType("description")
                            .WithChild()
                            .OfType("subject")
-                           .FirstFromLocalCollection()
+                           .IndexFromLocalCollection(1)
                            .WithChild()
                            .OfType("tex")
                            .OpenAttributeBuilder()
@@ -212,13 +212,13 @@ namespace XPather.Tests
                            .WhereAttributeContain("Name", "Motorola")
                            .FinishNotCondition()
                            .CloseAttributeBuilder()
-                           .LastFromGlobalCollection();
+                           .IndexFromGlobalCollection(^0);
 
             // Act
             var result = x.BuildPath();
 
             // Assert
-            Assert.Equal("(.//Tab[@AutomationId='PART_Tab']/TabItem[not(contains(@Name, 'Motorola'))])[last()]", result);
+            Assert.Equal("(.//Tab[@AutomationId='PART_Tab']/TabItem[not(contains(@Name, 'Motorola'))])[last() - 0]", result);
         }
 
         [Fact]
@@ -252,7 +252,7 @@ namespace XPather.Tests
                            .OpenAttributeBuilder()
                            .WithInnerTextContains("odamax")
                            .CloseAttributeBuilder()
-                           .IndexFromGlobalCollectionEnd(1)
+                           .IndexFromGlobalCollection(^1)
                            .WithFollowingSibling()
                            .OfType("strong")
                            .OpenAttributeBuilder()

@@ -92,55 +92,16 @@ namespace XPather
             return this;
         }
 
-        public XPathRootBuilder FirstFromGlobalCollection()
+        public XPathRootBuilder IndexFromGlobalCollection(Index index)
         {
             _builder.Insert(0, "(");
-            _builder.Append(")[1]");
+            _builder.Append(index.IsFromEnd ? $")[last() - {index.Value}]" : $")[{index.Value}]");
             return this;
         }
 
-        public XPathRootBuilder IndexFromGlobalCollection(int index)
+        public XPathRootBuilder IndexFromLocalCollection(Index index)
         {
-            _builder.Insert(0, "(");
-            _builder.Append($")[{index.ToString()}]");
-            return this;
-        }
-
-        public XPathRootBuilder IndexFromGlobalCollectionEnd(int index)
-        {
-            _builder.Insert(0, "(");
-            _builder.Append($")[last() - {index.ToString()}]");
-            return this;
-        }
-
-        public XPathRootBuilder LastFromGlobalCollection()
-        {
-            _builder.Insert(0, "(");
-            _builder.Append(")[last()]");
-            return this;
-        }
-
-        public XPathRootBuilder FirstFromLocalCollection()
-        {
-            _builder.Append("[1]");
-            return this;
-        }
-
-        public XPathRootBuilder IndexFromLocalCollection(int index)
-        {
-            _builder.Append($"[{index.ToString()}]");
-            return this;
-        }
-
-        public XPathRootBuilder IndexFromLocalCollectionEnd(int index)
-        {
-            _builder.Append($"[last() - {index.ToString()}]");
-            return this;
-        }
-
-        public XPathRootBuilder LastFromLocalCollection()
-        {
-            _builder.Append("[last()]");
+            _builder.Append(index.IsFromEnd ? $"[last() - {index.Value}]" : $"[{index.Value}]");
             return this;
         }
 

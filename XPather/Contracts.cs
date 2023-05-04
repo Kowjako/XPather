@@ -34,14 +34,8 @@
         public interface IOptions : ISelector, IBuildablePath
         {
             XPathAttributeBuilder OpenAttributeBuilder();
-            XPathRootBuilder FirstFromGlobalCollection();
-            XPathRootBuilder IndexFromGlobalCollection(int index);
-            XPathRootBuilder IndexFromGlobalCollectionEnd(int index);
-            XPathRootBuilder LastFromGlobalCollection();
-            XPathRootBuilder FirstFromLocalCollection();
-            XPathRootBuilder IndexFromLocalCollection(int index);
-            XPathRootBuilder IndexFromLocalCollectionEnd(int index);
-            XPathRootBuilder LastFromLocalCollection();
+            XPathRootBuilder IndexFromGlobalCollection(Index index);
+            XPathRootBuilder IndexFromLocalCollection(Index index);
         }
 
         /// <summary>
