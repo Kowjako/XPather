@@ -2,7 +2,10 @@
 
 namespace XPather
 {
-    public class XPathRootBuilder : Contracts.INode, Contracts.IAxeNode
+    public class XPathRootBuilder : Contracts.INode,
+                                    Contracts.IAxeNode,
+                                    Contracts.ISelector,
+                                    Contracts.IOptions
     {
         private readonly StringBuilder _builder;
 
@@ -11,7 +14,7 @@ namespace XPather
             _builder = new StringBuilder();
         }
 
-        public XPathRootBuilder FromCurrentNode()
+        public Contracts.ISelector FromCurrentNode()
         {
             _builder.Append(".");
             return this;
@@ -59,19 +62,19 @@ namespace XPather
             return this;
         }
 
-        public XPathRootBuilder OfType(string type)
+        public Contracts.IOptions OfType(string type)
         {
             _builder.Append($"{type}");
             return this;
         }
 
-        public XPathRootBuilder OfTypeParent()
+        public Contracts.IOptions OfTypeParent()
         {
             _builder.Append($"..");
             return this;
         }
 
-        public XPathRootBuilder OfTypeAny()
+        public Contracts.IOptions OfTypeAny()
         {
             _builder.Append($"*");
             return this;

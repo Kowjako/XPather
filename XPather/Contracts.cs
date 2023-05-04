@@ -6,18 +6,65 @@
     /// </summary>
     public static class Contracts
     {
-        public interface IAxeNode
+        /// <summary>
+        /// Specify where path is completed and ready to build
+        /// </summary>
+        public interface IBuildablePath
         {
-            XPathRootBuilder OfType(string type);
-            XPathRootBuilder OfTypeAny();
+            string BuildPath();
         }
 
+        /// <summary>
+        /// Available options for axes
+        /// </summary>
+        public interface ISelector
+        {
+            IAxeNode WithFollowingSibling();
+            IAxeNode WithPrecedingSibling();
+            IAxeNode WithDescendantOrSelf();
+            IAxeNode WithAncestor();
+            IAxeNode WithAncestorOrSelf();
+            INode WithDescendant();
+            INode WithChild();
+        }
+
+        /// <summary>
+        /// Available options after corrected xpath
+        /// </summary>
+        public interface IOptions : ISelector, IBuildablePath
+        {
+            XPathAttributeBuilder OpenAttributeBuilder();
+            XPathRootBuilder FirstFromGlobalCollection();
+            XPathRootBuilder IndexFromGlobalCollection(int index);
+            XPathRootBuilder IndexFromGlobalCollectionEnd(int index);
+            XPathRootBuilder LastFromGlobalCollection();
+            XPathRootBuilder FirstFromLocalCollection();
+            XPathRootBuilder IndexFromLocalCollection(int index);
+            XPathRootBuilder IndexFromLocalCollectionEnd(int index);
+            XPathRootBuilder LastFromLocalCollection();
+        }
+
+        /// <summary>
+        /// Available options after specified axe
+        /// </summary>
+        public interface IAxeNode
+        {
+            IOptions OfType(string type);
+            IOptions OfTypeAny();
+        }
+
+        /// <summary>
+        /// Available options after specified nameless axe like / or //
+        /// </summary>
         public interface INode : IAxeNode
         {
-            XPathRootBuilder OfTypeParent();
+            IOptions OfTypeParent();
             XPathRootBuilder OfAttributeType(string type);
         }
 
+        /// <summary>
+        /// Available options during condition building
+        /// </summary>
         public interface ICondition
         {
             XPathAttributeBuilder IsEqualTo(string value);
