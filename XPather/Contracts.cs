@@ -35,7 +35,7 @@
         {
             XPathRootBuilder IndexFromGlobalCollection(Index index);
             XPathRootBuilder IndexFromLocalCollection(Index index);
-            XPathRootBuilder ApplyCondition(Action<ConditionBuilder> b);
+            XPathRootBuilder ApplyCondition(Action<Contracts.ICondition> b);
         }
 
         /// <summary>
@@ -54,6 +54,24 @@
         {
             IOptions OfTypeParent();
             XPathRootBuilder OfAttributeType(string type);
+        }
+
+        public interface ICondition
+        {
+            ICondition WithInnerText(string text);
+            ICondition WithInnerTextContains(string text);
+            ICondition And();
+            ICondition Or();
+            ICondition WhereAttribute(string attrName);
+            ICondition IsEqualTo(string value);
+            ICondition IsNotEqualTo(string value);
+            ICondition IsGreaterThan(float value);
+            ICondition IsGreaterThanOrEqual(float value);
+            ICondition IsLessThan(float value);
+            ICondition IsLessThanOrEqual(float value);
+            ICondition WhereAttributeContain(string attrName, string value);
+            ICondition IsStartsWith(string attrName, string value);
+            ICondition Not(Action<ICondition> builder);
         }
     }
 }

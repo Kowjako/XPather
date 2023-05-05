@@ -80,7 +80,7 @@ namespace XPather
             return this;
         }
 
-        public XPathRootBuilder ApplyCondition(Action<ConditionBuilder> b)
+        public XPathRootBuilder ApplyCondition(Action<Contracts.ICondition> b)
         {
             _builder.Append(Condition.Create(b));
             return this;

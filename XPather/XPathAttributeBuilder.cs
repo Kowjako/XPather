@@ -4,7 +4,7 @@ namespace XPather
 {
     public static class Condition
     {
-        public static string Create(Action<ConditionBuilder> builder)
+        public static string Create(Action<Contracts.ICondition> builder)
         {
             var b = new ConditionBuilder();
             builder(b);
@@ -12,7 +12,7 @@ namespace XPather
         }
     }
 
-    public class ConditionBuilder 
+    public class ConditionBuilder : Contracts.ICondition
     {
         private readonly StringBuilder _builder = new();
 
@@ -27,84 +27,84 @@ namespace XPather
             return _builder.ToString();
         }
 
-        public ConditionBuilder WithInnerText(string text)
+        public Contracts.ICondition WithInnerText(string text)
         {
             _builder.Append($"text()='{text}'");
             return this;
         }
 
-        public ConditionBuilder WithInnerTextContains(string text)
+        public Contracts.ICondition WithInnerTextContains(string text)
         {
             _builder.Append($"contains(text(), '{text}')");
             return this;
         }
-        public ConditionBuilder And()
+        public Contracts.ICondition And()
         {
             _builder.Append(" and ");
             return this;
         }
 
-        public ConditionBuilder Or()
+        public Contracts.ICondition Or()
         {
             _builder.Append(" or ");
             return this;
         }
 
-        public ConditionBuilder WhereAttribute(string attrName)
+        public Contracts.ICondition WhereAttribute(string attrName)
         {
             _builder.Append($"@{attrName}");
             return this;
         }
 
-        public ConditionBuilder IsEqualTo(string value)
+        public Contracts.ICondition IsEqualTo(string value)
         {
             _builder.Append($"='{value}'");
             return this;
         }
 
-        public ConditionBuilder IsNotEqualTo(string value)
+        public Contracts.ICondition IsNotEqualTo(string value)
         {
             _builder.Append($"!='{value}'");
             return this;
         }
 
-        public ConditionBuilder IsGreaterThan(float value)
+        public Contracts.ICondition IsGreaterThan(float value)
         {
             _builder.Append($">{value}");
             return this;
         }
 
-        public ConditionBuilder IsGreaterThanOrEqual(float value)
+        public Contracts.ICondition IsGreaterThanOrEqual(float value)
         {
             _builder.Append($">={value}");
             return this;
         }
 
-        public ConditionBuilder IsLessThan(float value)
+        public Contracts.ICondition IsLessThan(float value)
         {
             _builder.Append($"<{value}");
             return this;
         }
 
-        public ConditionBuilder IsLessThanOrEqual(float value)
+        public Contracts.ICondition IsLessThanOrEqual(float value)
         {
             _builder.Append($"<={value}");
             return this;
         }
 
-        public ConditionBuilder WhereAttributeContain(string attrName, string value)
+        public Contracts.ICondition WhereAttributeContain(string attrName, string value)
         {
             _builder.Append($"contains(@{attrName}, '{value}')");
             return this;
         }
 
-        public ConditionBuilder IsStartsWith(string attrName, string value)
+        public Contracts.ICondition IsStartsWith(string attrName, string value)
         {
             _builder.Append($"starts-with(@{attrName}, '{value}')");
             return this;
         }
 
-        public ConditionBuilder Not(Action<ConditionBuilder> builder)
+        public Contracts.ICondition Not(Action<Contracts.ICondition> builder)
         {
             _builder.Append("not(");
             builder(this);
