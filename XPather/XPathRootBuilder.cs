@@ -80,11 +80,11 @@ namespace XPather
             return this;
         }
 
-        public XPathAttributeBuilder OpenAttributeBuilder()
+        public XPathRootBuilder ApplyCondition(Action<ConditionBuilder> b)
         {
-            var attrBuilder = new XPathAttributeBuilder(_builder, this);
-            return attrBuilder;
-        }
+            _builder.Append(Condition.Create(b));
+            return this;
+        }  
 
         public XPathRootBuilder OfAttributeType(string type)
         {

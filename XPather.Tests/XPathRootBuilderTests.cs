@@ -12,28 +12,24 @@ namespace XPather.Tests
         [Fact]
         public void XPath_Test_1()
         {
-            // Arrange
-            var x = _target.FromCurrentNode()
-                           .WithChild()
-                           .OfType("app")
-                           .WithChild()
-                           .OfType("description")
-                           .WithChild()
-                           .OfType("subject")
-                           .OpenAttributeBuilder()
-                           .StartNotCondition()
-                           .WhereAttribute("name")
-                           .IsEqualTo("wlodek")
-                           .Or()
-                           .WhereAttribute("age")
-                           .IsGreaterThan(21)
-                           .FinishNotCondition()
-                           .CloseAttributeBuilder()
-                           .WithSeveralPath()
-                           .WithDescendant()
-                           .OfType("app")
-                           .WithChild()
-                           .OfType("extra-notes");
+           // Arrange
+           var x = _target.FromCurrentNode()
+                          .WithChild()
+                          .OfType("app")
+                          .WithChild()
+                          .OfType("description")
+                          .WithChild()
+                          .OfType("subject")
+                          .ApplyCondition(x => x.Not(y => y.WhereAttribute("name")
+                                                           .IsEqualTo("wlodek")
+                                                           .Or()
+                                                           .WhereAttribute("age")
+                                                           .IsGreaterThan(21)))
+                          .WithSeveralPath()
+                          .WithDescendant()
+                          .OfType("app")
+                          .WithChild()
+                          .OfType("extra-notes");
 
             // Act
             var result = x.BuildPath();
@@ -53,11 +49,7 @@ namespace XPather.Tests
                            .OfType("description")
                            .WithChild()
                            .OfType("subject")
-                           .OpenAttributeBuilder()
-                           .StartNotCondition()
-                           .WithInnerText("ss-name")
-                           .FinishNotCondition()
-                           .CloseAttributeBuilder()
+                           .ApplyCondition(x => x.Not(y => y.WithInnerText("ss-name")))
                            .IndexFromGlobalCollection(1);
 
             // Act
@@ -73,21 +65,17 @@ namespace XPather.Tests
             // Arrange
             var x = _target.WithDescendant()
                            .OfTypeAny()
-                           .OpenAttributeBuilder()
-                           .WhereAttribute("Name")
-                           .IsEqualTo("fieldName")
-                           .And()
-                           .WhereAttribute("ClassName")
-                           .IsEqualTo("TextBlock")
-                           .CloseAttributeBuilder()
+                           .ApplyCondition(x => x.WhereAttribute("Name")
+                                                 .IsEqualTo("fieldName")
+                                                 .And()
+                                                 .WhereAttribute("ClassName")
+                                                 .IsEqualTo("TextBlock"))
                            .WithFollowingSibling()
                            .OfTypeAny()
                            .WithChild()
                            .OfTypeAny()
-                           .OpenAttributeBuilder()
-                           .WhereAttribute("ClassName")
-                           .IsEqualTo("MLTextView")
-                           .CloseAttributeBuilder();
+                           .ApplyCondition(x => x.WhereAttribute("ClassName")
+                                                 .IsEqualTo("MLTextView"));
 
             // Act
             var result = x.BuildPath();
@@ -107,10 +95,8 @@ namespace XPather.Tests
                            .OfType("extra-notes")
                            .WithChild()
                            .OfType("note")
-                           .OpenAttributeBuilder()
-                           .WhereAttribute("id")
-                           .IsGreaterThan(1)
-                           .CloseAttributeBuilder()
+                           .ApplyCondition(x => x.WhereAttribute("id")
+                                                 .IsGreaterThan(1))
                            .IndexFromLocalCollection(1)
                            .WithChild()
                            .OfType("value");
@@ -128,17 +114,13 @@ namespace XPather.Tests
             // Arrange
             var x = _target.WithDescendant()
                            .OfType("div")
-                           .OpenAttributeBuilder()
-                           .WhereAttributeContain("class", "password-group")
-                           .CloseAttributeBuilder()
+                           .ApplyCondition(x => x.WhereAttributeContain("class", "password-group"))
                            .WithAncestorOrSelf()
                            .OfType("div")
                            .WithDescendant()
                            .OfType("input")
-                           .OpenAttributeBuilder()
-                           .WhereAttribute("type")
-                           .IsEqualTo("email")
-                           .CloseAttributeBuilder();
+                           .ApplyCondition(x => x.WhereAttribute("type")
+                                                 .IsEqualTo("email"));
 
             // Act
             var result = x.BuildPath();
@@ -153,10 +135,8 @@ namespace XPather.Tests
             // Arrange
             var x = _target.WithDescendant()
                            .OfType("option")
-                           .OpenAttributeBuilder()
-                           .WhereAttribute("value")
-                           .IsEqualTo("Founder/CXO")
-                           .CloseAttributeBuilder()
+                           .ApplyCondition(x => x.WhereAttribute("value")
+                                                 .IsEqualTo("Founder/CXO"))
                            .WithPrecedingSibling()
                            .OfType("option")
                            .IndexFromLocalCollection(1);
@@ -181,9 +161,7 @@ namespace XPather.Tests
                            .IndexFromLocalCollection(1)
                            .WithChild()
                            .OfType("tex")
-                           .OpenAttributeBuilder()
-                           .WithInnerText("sas")
-                           .CloseAttributeBuilder()
+                           .ApplyCondition(x => x.WithInnerText("sas"))
                            .WithChild()
                            .OfAttributeType("id");
 
@@ -201,17 +179,11 @@ namespace XPather.Tests
             var x = _target.FromCurrentNode()
                            .WithDescendant()
                            .OfType("Tab")
-                           .OpenAttributeBuilder()
-                           .WhereAttribute("AutomationId")
-                           .IsEqualTo("PART_Tab")
-                           .CloseAttributeBuilder()
+                           .ApplyCondition(x => x.WhereAttribute("AutomationId")
+                                                 .IsEqualTo("PART_Tab"))
                            .WithChild()
                            .OfType("TabItem")
-                           .OpenAttributeBuilder()
-                           .StartNotCondition()
-                           .WhereAttributeContain("Name", "Motorola")
-                           .FinishNotCondition()
-                           .CloseAttributeBuilder()
+                           .ApplyCondition(x => x.Not(y => y.WhereAttributeContain("Name", "Motorola")))
                            .IndexFromGlobalCollection(^0);
 
             // Act
@@ -249,16 +221,12 @@ namespace XPather.Tests
             // Arrange
             var x = _target.WithDescendant()
                            .OfType("span")
-                           .OpenAttributeBuilder()
-                           .WithInnerTextContains("odamax")
-                           .CloseAttributeBuilder()
+                           .ApplyCondition(x => x.WithInnerTextContains("odamax"))
                            .IndexFromGlobalCollection(^1)
                            .WithFollowingSibling()
                            .OfType("strong")
-                           .OpenAttributeBuilder()
-                           .WhereAttribute("class")
-                           .IsEqualTo("deals-price")
-                           .CloseAttributeBuilder();
+                           .ApplyCondition(x => x.WhereAttribute("class")
+                                                 .IsEqualTo("deals-price"));
 
             // Act
             var result = x.BuildPath();

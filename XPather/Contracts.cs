@@ -33,9 +33,9 @@
         /// </summary>
         public interface IOptions : ISelector, IBuildablePath
         {
-            XPathAttributeBuilder OpenAttributeBuilder();
             XPathRootBuilder IndexFromGlobalCollection(Index index);
             XPathRootBuilder IndexFromLocalCollection(Index index);
+            XPathRootBuilder ApplyCondition(Action<ConditionBuilder> b);
         }
 
         /// <summary>
@@ -54,19 +54,6 @@
         {
             IOptions OfTypeParent();
             XPathRootBuilder OfAttributeType(string type);
-        }
-
-        /// <summary>
-        /// Available options during condition building
-        /// </summary>
-        public interface ICondition
-        {
-            XPathAttributeBuilder IsEqualTo(string value);
-            XPathAttributeBuilder IsNotEqualTo(string value);
-            XPathAttributeBuilder IsGreaterThan(float value);
-            XPathAttributeBuilder IsGreaterThanOrEqual(float value);
-            XPathAttributeBuilder IsLessThan(float value);
-            XPathAttributeBuilder IsLessThanOrEqual(float value);
         }
     }
 }

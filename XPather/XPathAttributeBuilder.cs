@@ -2,113 +2,114 @@
 
 namespace XPather
 {
-    public class XPathAttributeBuilder : Contracts.ICondition
+    public static class Condition
     {
-        private readonly StringBuilder _builder;
-        private readonly XPathRootBuilder _parent;
-
-        public XPathAttributeBuilder(StringBuilder builder, XPathRootBuilder root)
+        public static string Create(Action<ConditionBuilder> builder)
         {
-            _builder = builder;
-            _parent = root;
+            var b = new ConditionBuilder();
+            builder(b);
+            return b.Compile();
+        }
+    }
 
+    public class ConditionBuilder 
+    {
+        private readonly StringBuilder _builder = new();
+
+        internal ConditionBuilder()
+        {
             _builder.Append("[");
         }
 
-        public Contracts.ICondition WhereAttribute(string attrName)
+        public string Compile()
         {
-            _builder.Append($"@{attrName}");
-            return this;
+            _builder.Append("]");
+            return _builder.ToString();
         }
 
-        public XPathAttributeBuilder IsEqualTo(string value)
-        {
-            _builder.Append($"='{value}'");
-            return this;
-        }
-
-        public XPathAttributeBuilder IsNotEqualTo(string value)
-        {
-            _builder.Append($"!='{value}'");
-            return this;
-        }
-
-        public XPathAttributeBuilder IsGreaterThan(float value)
-        {
-            _builder.Append($">{value}");
-            return this;
-        }
-
-        public XPathAttributeBuilder IsGreaterThanOrEqual(float value)
-        {
-            _builder.Append($">={value}");
-            return this;
-        }
-
-        public XPathAttributeBuilder IsLessThan(float value)
-        {
-            _builder.Append($"<{value}");
-            return this;
-        }
-
-        public XPathAttributeBuilder IsLessThanOrEqual(float value)
-        {
-            _builder.Append($"<={value}");
-            return this;
-        }
-
-        public XPathAttributeBuilder WhereAttributeContain(string attrName, string value)
-        {
-            _builder.Append($"contains(@{attrName}, '{value}')");
-            return this;
-        }
-
-        public XPathAttributeBuilder IsStartsWith(string attrName, string value)
-        {
-            _builder.Append($"starts-with(@{attrName}, '{value}')");
-            return this;
-        }
-
-        public XPathAttributeBuilder WithInnerText(string text)
+        public ConditionBuilder WithInnerText(string text)
         {
             _builder.Append($"text()='{text}'");
             return this;
         }
 
-        public XPathAttributeBuilder WithInnerTextContains(string text)
+        public ConditionBuilder WithInnerTextContains(string text)
         {
             _builder.Append($"contains(text(), '{text}')");
             return this;
         }
-
-        public XPathAttributeBuilder StartNotCondition()
-        {
-            _builder.Append("not(");
-            return this;
-        }
-
-        public XPathAttributeBuilder FinishNotCondition()
-        {
-            _builder.Append(")");
-            return this;
-        }
-
-        public XPathAttributeBuilder And()
+        public ConditionBuilder And()
         {
             _builder.Append(" and ");
             return this;
         }
 
-        public XPathAttributeBuilder Or()
+        public ConditionBuilder Or()
         {
             _builder.Append(" or ");
             return this;
         }
 
-        public XPathRootBuilder CloseAttributeBuilder()
+        public ConditionBuilder WhereAttribute(string attrName)
         {
-            _builder.Append("]");
-            return _parent;
+            _builder.Append($"@{attrName}");
+            return this;
         }
-    }
+
+        public ConditionBuilder IsEqualTo(string value)
+        {
+            _builder.Append($"='{value}'");
+            return this;
+        }
+
+        public ConditionBuilder IsNotEqualTo(string value)
+        {
+            _builder.Append($"!='{value}'");
+            return this;
+        }
+
+        public ConditionBuilder IsGreaterThan(float value)
+        {
+            _builder.Append($">{value}");
+            return this;
+        }
+
+        public ConditionBuilder IsGreaterThanOrEqual(float value)
+        {
+            _builder.Append($">={value}");
+            return this;
+        }
+
+        public ConditionBuilder IsLessThan(float value)
+        {
+            _builder.Append($"<{value}");
+            return this;
+        }
+
+        public ConditionBuilder IsLessThanOrEqual(float value)
+        {
+            _builder.Append($"<={value}");
+            return this;
+        }
+
+        public ConditionBuilder WhereAttributeContain(string attrName, string value)
+        {
+            _builder.Append($"contains(@{attrName}, '{value}')");
+            return this;
+        }
+
+        public ConditionBuilder IsStartsWith(string attrName, string value)
+        {
+            _builder.Append($"starts-with(@{attrName}, '{value}')");
+            return this;
+        }
+
+        public ConditionBuilder Not(Action<ConditionBuilder> builder)
+        {
+            _builder.Append("not(");
+            builder(this);
+            _builder.Append(")");
+            return this;
+        }
+    }  
 }
