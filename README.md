@@ -12,15 +12,11 @@ var x = _target.FromCurrentNode()
                .OfType("description")
                .WithChild()
                .OfType("subject")
-               .OpenAttributeBuilder()
-               .StartNotCondition()
-               .WhereAttribute("name")
-               .IsEqualTo("wlodek")
-               .Or()
-               .WhereAttribute("age")
-               .IsGreaterThan(21)
-               .FinishNotCondition()
-               .CloseAttributeBuilder()
+               .ApplyCondition(x => x.Not(y => y.WhereAttribute("name")
+                                                .IsEqualTo("wlodek")
+                                                .Or()
+                                                .WhereAttribute("age")
+                                                .IsGreaterThan(21)))
                .WithSeveralPath()
                .WithDescendant()
                .OfType("app")
@@ -33,21 +29,17 @@ Kod:
 ```java
 var x = _target.WithDescendant()
                .OfType("*")
-               .OpenAttributeBuilder()
-               .WhereAttribute("Name")
-               .IsEqualTo("fieldName")
-               .And()
-               .WhereAttribute("ClassName")
-               .IsEqualTo("TextBlock")
-               .CloseAttributeBuilder()
+               .ApplyCondition(x => x.WhereAttribute("Name)
+                                     .IsEqualTo("fieldName")
+                                     .And()
+                                     .WhereAttribute("ClassName")
+                                     .IsEqualTo("TextBlock")
                .WithFollowingSibling()
                .OfType("*")
                .WithChild()
                .OfType("*")
-               .OpenAttributeBuilder()
-               .WhereAttribute("ClassName")
-               .IsEqualTo("MLTextView")
-               .CloseAttributeBuilder();
+               .ApplyCondition(x => x.WhereAttribute("ClassName")
+                                     .IsEqualTo("MLTextView"));
 ```
 
 Ścieżka: **(.//Tab[@AutomationId='PART_Tab']/TabItem[not(contains(@Name, 'Motorola'))])[last()]**  
@@ -56,18 +48,13 @@ Kod:
 var x = _target.FromCurrentNode()
                .WithDescendant()
                .OfType("Tab")
-               .OpenAttributeBuilder()
-               .WhereAttribute("AutomationId")
-               .IsEqualTo("PART_Tab")
-               .CloseAttributeBuilder()
+               .ApplyCondition(x => x.WhereAttribute("AutomationId")
+                                     .IsEqualTo("PART_Tab"))
                .WithChild()
                .OfType("TabItem")
                .OpenAttributeBuilder()
-               .StartNotCondition()
-               .WhereAttributeContain("Name", "Motorola")
-               .FinishNotCondition()
-               .CloseAttributeBuilder()
-               .LastFromGlobalCollection();
+               .ApplyCondition(x => x.Not(y => y.WhereAttributeContain("Name", "Motorola")))
+               .IndexFromGlobalCollection(^0);
 ```
 
 Ścieżka: **//div[contains(@class, 'password-group')]/ancestor-or-self::div//input[@type='email']**  
@@ -75,15 +62,11 @@ Kod:
 ```java
 var x = _target.WithDescendant()
                .OfType("div")
-               .OpenAttributeBuilder()
-               .WhereAttributeContain("class", "password-group")
-               .CloseAttributeBuilder()
+               .ApplyCondition(x => x.WhereAttributeContain("class", "password-group"))
                .WithAncestorOrSelf()
                .OfType("div")
                .WithDescendant()
                .OfType("input")
-               .OpenAttributeBuilder()
-               .WhereAttribute("type")
-               .IsEqualTo("email")
-               .CloseAttributeBuilder();
+               .ApplyCondition(x => x.WhereAttribute("type")
+                                     .IsEqualTo("email"));
 ```
