@@ -52,7 +52,6 @@ var x = _target.FromCurrentNode()
                                      .IsEqualTo("PART_Tab"))
                .WithChild()
                .OfType("TabItem")
-               .OpenAttributeBuilder()
                .ApplyCondition(x => x.Not(y => y.WhereAttributeContain("Name", "Motorola")))
                .IndexFromGlobalCollection(^0);
 ```
