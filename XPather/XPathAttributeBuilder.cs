@@ -62,6 +62,12 @@ namespace XPather
             return this;
         }
 
+        public Contracts.ICondition IsEqualTo(int value)
+        {
+            _builder.Append($"={value}");
+            return this;
+        }
+
         public Contracts.ICondition IsNotEqualTo(string value)
         {
             _builder.Append($"!='{value}'");

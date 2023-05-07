@@ -64,6 +64,7 @@
             ICondition Or();
             ICondition WhereAttribute(string attrName);
             ICondition IsEqualTo(string value);
+            ICondition IsEqualTo(int value);
             ICondition IsNotEqualTo(string value);
             ICondition IsGreaterThan(float value);
             ICondition IsGreaterThanOrEqual(float value);

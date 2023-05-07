@@ -234,5 +234,31 @@ namespace XPather.Tests
             // Assert
             Assert.Equal("(//span[contains(text(), 'odamax')])[last() - 1]/following-sibling::strong[@class='deals-price']", result);
         }
+
+        [Fact]
+        public void XPath_Test_11()
+        {
+            // Arrange
+            var x = _target.FromCurrentNode()
+                           .WithChild()
+                           .OfType("app")
+                           .WithChild()
+                           .OfType("description")
+                           .WithChild()
+                           .OfType("subject")
+                           .ApplyCondition(x => x.Not(y => y.WhereAttribute("id")
+                                                            .IsEqualTo(0)
+                                                            .Or()
+                                                            .IsStartsWith("test", "w1")
+                                                            .Or()
+                                                            .Not(z => z.WhereAttribute("q")
+                                                                       .IsGreaterThan(1))));
+
+            // Act
+            var result = x.BuildPath();
+
+            // Assert
+            Assert.Equal("./app/description/subject[not(@id=0 or starts-with(@test, 'w1') or not(@q>1))]", result);
+        }
     }
 }
